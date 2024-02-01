@@ -1,0 +1,64 @@
+-- Create table for inventory
+CREATE TABLE Inventory (
+    ProductID INT PRIMARY KEY,
+    ProductName VARCHAR(100) NOT NULL,
+    Quantity INT CHECK (Quantity >= 0),
+    Price DECIMAL(10, 2) CHECK (Price >= 0.00),
+    Category VARCHAR(50),
+    ExpDate DATE,
+    Manufacturer VARCHAR(100)
+);
+
+-- Insert data into the inventory table
+INSERT INTO Inventory (ProductID, ProductName, Quantity, Price, Category, ExpDate, Manufacturer)
+VALUES
+    (1, 'Laptop', 10, 899.99, 'Electronics', '2025-12-31', 'HP'),
+    (2, 'Smartphone', 20, 599.99, 'Electronics', '2024-12-31', 'Apple'),
+    (3, 'Printer', 5, 249.99, 'Electronics', '2023-06-30', 'Canon'),
+    (4, 'Headphones', 15, 99.99, 'Accessories', '2024-09-30', 'Sony'),
+    (5, 'Tablet', 8, 349.99, 'Electronics', '2024-11-30', 'Apple'),
+    (6, 'Monitor', 12, 199.99, 'Electronics', '2025-03-31', 'Dell');
+
+-- Select all data from inventory
+SELECT * FROM Inventory;
+
+-- Products grouped by manufacturer
+SELECT Manufacturer, COUNT(*) AS TotalProducts
+FROM Inventory
+GROUP BY Manufacturer;
+
+-- Select specific data from inventory using WHERE clause
+SELECT * FROM Inventory WHERE Category = 'Electronics';
+
+-- Delete data from inventory
+DELETE FROM Inventory WHERE ProductID = 4;
+
+-- Update data in inventory
+UPDATE Inventory SET Quantity = 25 WHERE ProductName = 'Smartphone';
+
+-- Add a column to the inventory table
+ALTER TABLE Inventory ADD StockLocation VARCHAR(100);
+
+-- Update data in the new column
+UPDATE Inventory SET StockLocation = 'Warehouse A' WHERE ProductID = 1;
+UPDATE Inventory SET StockLocation = 'Warehouse B' WHERE ProductID = 2;
+UPDATE Inventory SET StockLocation = 'Warehouse C' WHERE ProductID = 3;
+UPDATE Inventory SET StockLocation = 'Warehouse A' WHERE ProductID = 5;
+UPDATE Inventory SET StockLocation = 'Warehouse B' WHERE ProductID = 6;
+
+-- Select all data from inventory to see changes
+SELECT * FROM Inventory;
+
+-- Updating quantity and price of a product
+BEGIN TRANSACTION;
+
+UPDATE Inventory SET Quantity = 30 WHERE ProductID = 1;
+UPDATE Inventory SET Price = 949.99 WHERE ProductID = 1;
+
+COMMIT;
+
+-- Check if transaction was successful
+SELECT * FROM Inventory WHERE ProductID = 1;
+
+-- Check products that are going to expire soon
+SELECT * FROM Inventory WHERE ExpDate <= DATEADD(MONTH, 3, GETDATE());
