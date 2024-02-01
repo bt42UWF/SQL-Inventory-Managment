@@ -1,6 +1,8 @@
 # SQL Practice Code Example
 ### Creating and managing an inventory database. 
 
+*This code is practice from a class assignment.*
+
 This code is creating a SQL database structure for inventory management, populating it with sample data, and performing various operations such as selecting, updating, deleting, and altering data within the database.
 
 Here's a breakdown of what each part does:
